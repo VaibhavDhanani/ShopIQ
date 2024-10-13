@@ -1,0 +1,74 @@
+<!-- Horizontal Scrollable Category Section -->
+<div class="container-fluid m-2">
+    <div class="row flex-nowrap overflow-auto">
+        {% for category in category %}
+        <div class="col-auto d-flex flex-column align-items-center mx-2">
+            <div class="text-center">
+                <img src="{{ category.img }}" alt="{{ category.name }}" class="img-fluid rounded" style="max-height: 150px;">
+                <h6 class="mt-2">{{ category.name }}</h6>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Carousel Section -->
+<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for carousel in carousel %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <a href="{{ carousel.redirect_to }}">
+                <img src="{{ carousel.img }}" class="d-block" alt="Carousel Image" style="height: 400px; object-fit: cover;">
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Main Section with Items -->
+<div class="">
+    {% for section in mainsection %}
+    <div class="container px-4 mb-5">
+        <h2 class="text-center my-4">
+            <a href="#" class="text-decoration-none text-dark">{{ section.heading }}</a>
+        </h2>
+
+        <div class="row flex-nowrap overflow-auto">
+            {% for item in section.items|slice:":8" %}
+            <div class="col-auto" style="min-width: 18rem;">
+                <div class="card h-100 shadow-sm">
+                    <div class="ratio ratio-4x3">
+                        <img 
+                            src="https://imgs.search.brave.com/1NtgJsBaUn8e4zSwFrIYr-JtmTyLmnwn-7CfARYerUU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bGFwdG9wLWZyb20t/YWJvdmUuanBnP3dp/ZHRoPTEwMDAmZm9y/bWF0PXBqcGcmZXhp/Zj0wJmlwdGM9MA" 
+                            class="card-img-top img-fluid" 
+                            alt="{{ item.name }}" 
+                            style="object-fit: cover;">
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p class="card-text text-muted flex-grow-1">${{ item.price }}</p>
+
+                        <div class="d-grid gap-2 mt-auto">
+                            <a href="{{ item.name }}" class="btn btn-primary mb-2">View Item</a>
+                            <button class="btn btn-outline-secondary">
+                                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>

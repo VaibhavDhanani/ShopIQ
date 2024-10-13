@@ -1,0 +1,37 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.dropdown-menu {
+    display: none; /* Hide the dropdown initially */
+    position: absolute; /* Position it relative to the parent */
+    background-color: white; /* Background color */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    z-index: 1000; /* Make sure it appears above other elements */
+    padding: 0; /* Remove default padding */
+    margin-top: 0.5rem; /* Space between the dropdown and the toggle */
+}
+
+.dropdown-item {
+    display: block; /* Ensure items are block elements */
+    padding: 0.5rem 1rem; /* Padding for the items */
+    text-decoration: none; /* Remove underline */
+    color: #000; /* Text color */
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa; /* Background color on hover */
+}
+
+.show {
+    display: block; /* Class to show the dropdown */
+}

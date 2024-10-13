@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # custom apps
+    'Cart',
+    'Orders',
+    'Payments',
+    'Products',
+    'UserAccounts',
 ]
+
+AUTH_USER_MODEL = 'UserAccounts.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,7 +63,7 @@ ROOT_URLCONF = 'ShopIQ.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +79,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ShopIQ.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -79,7 +89,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'masteruser',
         'PASSWORD': 'masteruser0911102',
-        'HOST': 'python-project-techforge-v2.c9amco8q0tp9.ap-south-1.rds.amazonaws.com',
+        'HOST': 'python-project-shopiq.c9amco8q0tp9.ap-south-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
@@ -120,6 +130,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
