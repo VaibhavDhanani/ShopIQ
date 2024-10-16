@@ -1,23 +1,19 @@
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark z-index-5 ">
     <div class="container-fluid">
-        <!-- Logo and Brand -->
         <a class="navbar-brand d-flex align-items-center" href="#">
             <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="ShopIQ" width="30" height="30" class="me-2">
             <span class="fw-bold">ShopIQ</span>
         </a>
 
-        <!-- Toggler Button for Small Screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navbar Links and Content -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <!-- Left Links (Categories, Offers) -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Deals & Offers</a>
@@ -27,9 +23,9 @@
                         Categories
                     </a>
                     <ul class="dropdown-menu" id="dropdownMenu">
-                        <li><a class="dropdown-item" href="#">Electronics</a></li>
-                        <li><a class="dropdown-item" href="#">Clothing</a></li>
-                        <li><a class="dropdown-item" href="#">Home & Furniture</a></li>
+                        {% for cat in category %}
+                        <li><a class="dropdown-item" href="{% url 'category-detail' cat.slug %}">{{cat.name}}</a></li>
+                        {% endfor %}
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -42,12 +38,12 @@
                 document.addEventListener('DOMContentLoaded', () => {
                     const dropdownToggle = document.getElementById('customDropdown');
                     const dropdownMenu = document.getElementById('dropdownMenu');
-            
+
                     dropdownToggle.addEventListener('click', (event) => {
                         event.preventDefault();
                         dropdownMenu.classList.toggle('show');
                     });
-            
+
                     window.addEventListener('click', (event) => {
                         if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
                             dropdownMenu.classList.remove('show');
@@ -56,7 +52,6 @@
                 });
             </script>
 
-            <!-- Search Bar -->
             <form class="d-flex mb-2 mb-lg-0 me-lg-3" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
                 <button class="btn btn-outline-light" type="submit">
@@ -64,7 +59,6 @@
                 </button>
             </form>
 
-            <!-- User Authentication and Cart Links -->
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="#">

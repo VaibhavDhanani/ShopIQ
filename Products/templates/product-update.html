@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Create/Update Your Product</h2>
+    <form method="post" class="container mt-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Product Name</label>
+            {{ form.name }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            {{ form.description }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_price" class="form-label">Price</label>
+            {{ form.price }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_discount_percentage" class="form-label">Discount (%)</label>
+            {{ form.discount_percentage }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_brand" class="form-label">Brand</label>
+            {{ form.brand }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_categories" class="form-label">Categories</label>
+            {{ form.categories }}
+        </div>
+    
+        <div class="mb-3">
+            <label for="id_stock_quantity" class="form-label">Stock Quantity</label>
+            {{ form.stock_quantity }}
+        </div>
+    
+        <div class="form-check mb-3">
+            {{ form.is_active }}
+            <label for="id_is_active" class="form-check-label">Is Active</label>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Save Product</button>
+    </form>
+    
+</div>
+{% endblock %}

@@ -1,9 +1,7 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from Products.models import Product, Category
+from django.shortcuts import render
+from Products.models import Category
 
-
-def index(request):
+def navbar_data(request):
     category = Category.objects.filter(parent__isnull=True)
     print(category)
     carousel = [
@@ -49,10 +47,5 @@ def index(request):
         {"heading": "Currently Selled", "items": items},
         {"heading": "For You", "items": items},
     ]
-    context = {"category": category, "carousel": carousel, "mainsection": mainsection}
-    return render(request, "index.html", context)
-
-
-def categoryView(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    return render(request, "category_detail.html", {"category": category})
+    return {"category": category, "carousel": carousel, "mainsection": mainsection}
+    
