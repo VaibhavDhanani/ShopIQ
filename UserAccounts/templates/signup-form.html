@@ -1,0 +1,114 @@
+<form method="POST" class="container mt-5" style="max-width: 600px;">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
+        {{ form.name }}
+        <div class="text-danger">{{ form.name.errors }}</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+        {{ form.email }}
+        <div class="text-danger">{{ form.email.errors }}</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
+        {{ form.phone_number }}
+        <div class="text-danger">{{ form.phone_number.errors }}</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.type.id_for_label }}" class="form-label">User Type</label>
+        {{ form.type }}
+        <div class="text-danger">{{ form.type.errors }}</div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+        {{ form.password }}
+        <div class="text-danger">{{ form.password.errors }}</div>
+
+        <div id="password-requirements" class="mt-2 text-muted" style="display: none;">
+            <p class="mb-1">Password must contain:</p>
+            <ul>
+                <li id="length" class="text-danger">At least 8 characters</li>
+                <li id="uppercase" class="text-danger">At least one uppercase letter</li>
+                <li id="lowercase" class="text-danger">At least one lowercase letter</li>
+                <li id="number" class="text-danger">At least one number</li>
+                <li id="special" class="text-danger">At least one special character (@, #, $, etc.)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="{{ form.confirm_password.id_for_label }}" class="form-label">Confirm Password</label>
+        {{ form.confirm_password }}
+        <div class="text-danger">{{ form.confirm_password.errors }}</div>
+    </div>
+
+    <div class="form-check mb-3">
+        {{ form.is_active }}
+        <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
+            Is Active
+        </label>
+        <div class="text-danger">{{ form.is_active.errors }}</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">Create User</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const passwordField = document.querySelector('#id_password');
+        const requirements = document.getElementById('password-requirements');
+        const lengthReq = document.getElementById('length');
+        const uppercaseReq = document.getElementById('uppercase');
+        const lowercaseReq = document.getElementById('lowercase');
+        const numberReq = document.getElementById('number');
+        const specialReq = document.getElementById('special');
+
+        passwordField.addEventListener('focus', function () {
+            requirements.style.display = 'block';
+        });
+
+        function checkPassword(password) {
+            const lengthCondition = password.length >= 8;
+            const uppercaseCondition = /[A-Z]/.test(password);
+            const lowercaseCondition = /[a-z]/.test(password);
+            const numberCondition = /[0-9]/.test(password);
+            const specialCondition = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            toggleRequirement(lengthReq, lengthCondition);
+            toggleRequirement(uppercaseReq, uppercaseCondition);
+            toggleRequirement(lowercaseReq, lowercaseCondition);
+            toggleRequirement(numberReq, numberCondition);
+            toggleRequirement(specialReq, specialCondition);
+            if (
+                lengthCondition &&
+                uppercaseCondition &&
+                lowercaseCondition &&
+                numberCondition &&
+                specialCondition
+            ) {
+                requirements.style.display = 'none';
+            } else {
+                requirements.style.display = 'block';
+            }
+        }
+
+        function toggleRequirement(element, isValid) {
+            if (isValid) {
+                element.style.display = 'none';
+            } else {
+                element.style.display = 'block';
+            }
+        }
+
+
+        passwordField.addEventListener('input', function (event) {
+            checkPassword(event.target.value);
+        });
+    });
+</script>

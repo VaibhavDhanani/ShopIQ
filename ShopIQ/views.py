@@ -56,3 +56,5 @@ def index(request):
 def categoryView(request, slug):
     category = get_object_or_404(Category, slug=slug)
     return render(request, "category_detail.html", {"category": category})
+
+
