@@ -26,8 +26,14 @@ SECRET_KEY = 'django-insecure-l89+0o_e@466t^65&$$nve_h+bt+#-t058$6h7e!mwkvb)0ze*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    ".railway.app"
+]
+if DEBUG:
+    ALLOWED_HOSTS+= [
+        "127.0.0.1",
+        "localhost"
+    ]
 
 # Application definition
 
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
     'Orders',
     'Payments',
     'Products',
+    'Category',
     'UserAccounts',
 ]
 # Specification done by me 
@@ -72,7 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                
+                # my global data
                 'Products.context_processor.navbar_data'
             ],
         },

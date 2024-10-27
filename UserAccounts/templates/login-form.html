@@ -1,0 +1,22 @@
+<form method="POST" class="container mt-5" style="max-width: 600px;">
+    {% csrf_token %}
+
+    
+
+    <div class="mb-3">
+        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+        {{ form.email }}
+        <div class="text-danger">{{ form.email.errors }}</div>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+        {{ form.password }}
+
+    </div>
+
+
+    <a href="{% url 'sign-up' %}" >No Account ! Don't worry Create Your account here</a>
+    <button type="submit" class="btn btn-primary w-100">Login</button>
+</form>

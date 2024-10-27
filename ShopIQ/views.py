@@ -4,6 +4,11 @@ from Products.models import Product, Category
 
 
 def index(request):
+
+# Filter and remove products with invalid category references
+    invalid_products = Product.objects.filter(categories__isnull=True)
+    invalid_products.delete()
+
     category = Category.objects.filter(parent__isnull=True)
     print(category)
     carousel = [
@@ -53,8 +58,5 @@ def index(request):
     return render(request, "index.html", context)
 
 
-def categoryView(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    return render(request, "category_detail.html", {"category": category})
 
 

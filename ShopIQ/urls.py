@@ -23,6 +23,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index, name="home"),
     path("", include("UserAccounts.urls")),
-    path('category/<slug:slug>/', views.categoryView, name='category-detail'),
+    path('category/', include("Category.urls")),
     path("products/", include("Products.urls")),
 ]

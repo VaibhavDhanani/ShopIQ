@@ -24,7 +24,7 @@
                     </a>
                     <ul class="dropdown-menu" id="dropdownMenu">
                         {% for cat in category %}
-                        <li><a class="dropdown-item" href="{% url 'category-detail' cat.slug %}">{{cat.name}}</a></li>
+                        <li><a class="dropdown-item" href="#">{{cat.name}}</a></li>
                         {% endfor %}
                         <li>
                             <hr class="dropdown-divider">
@@ -60,8 +60,15 @@
             </form>
 
             <ul class="navbar-nav mb-2 mb-lg-0">
+                {% if request.session.user_name %}
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'log-out' %}">
+                        <i class="bi bi-box-arrow-right me-1"></i>Log Out
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'log-in' %}">
                         <i class="bi bi-person-circle me-1"></i>Login
                     </a>
                 </li>
@@ -70,6 +77,8 @@
                         <i class="bi bi-box-arrow-in-right me-1"></i>Register
                     </a>
                 </li>
+                {% endif %}
+
                 <li class="nav-item">
                     <a class="nav-link position-relative" href="#">
                         <i class="bi bi-cart-fill me-1"></i>Cart

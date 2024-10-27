@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from .models import CustomUser
 
 
-class CustomUserForm(forms.ModelForm):
+class UserSignUpForm(forms.ModelForm):
     confirm_password = forms.CharField(
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={"class": "form-control"}),
@@ -47,3 +47,11 @@ class CustomUserForm(forms.ModelForm):
             raise ValidationError("Passwords do not match.")
 
         return cleaned_data
+    
+    
+
+
+class UserLogInForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
+
