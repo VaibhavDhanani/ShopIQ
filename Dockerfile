@@ -1,51 +1,54 @@
-# Set Python version as a build-time argument
-ARG PYTHON_VERSION=3.12-slim-bullseye
-FROM python:${PYTHON_VERSION}
+# Use Python slim base image for smaller size
+FROM python:3.12-slim
 
-# Create and activate virtual environment
-RUN python -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
+# Prevent Python from writing pyc files and buffering stdout/stderr
+ENV PYTHONDONTWRITEBYTRACE=1 \
+    PYTHONUNBUFFERED=1 \
+    # Disable pip's cache dir
+    PIP_NO_CACHE_DIR=1 \
+    # Don't check for pip updates
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Upgrade pip
-RUN pip install --upgrade pip
-
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    libpq-dev libjpeg-dev libcairo2 gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create application directory
-RUN mkdir /code
+# Set work directory
 WORKDIR /code
 
-# Copy project files
-COPY . /code
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    libjpeg-dev \
+    libcairo2 \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN pip install -r ./requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Set environment variables for Django
-ARG DJANGO_SECRET_KEY
-ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+# Copy project
+COPY . .
 
+# Set build arguments with defaults
+ARG DJANGO_SECRET_KEY="default-secret-key-change-in-production"
 ARG DJANGO_DEBUG=0
-ENV DJANGO_DEBUG=${DJANGO_DEBUG}
+ARG PROJ_NAME="shopiq"
 
-# Update the project name to your actual project name
-ARG PROJ_NAME="ShopIQ"
+# Set environment variables
+ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} \
+    DJANGO_DEBUG=${DJANGO_DEBUG}
 
-# Prepare the entrypoint script
-RUN printf "#!/bin/bash\n" > ./paracord_runner.sh && \
-    printf "RUN_PORT=\"\${PORT:-8000}\"\n\n" >> ./paracord_runner.sh && \
-    printf "python manage.py migrate --no-input\n" >> ./paracord_runner.sh && \
-    printf "gunicorn ${PROJ_NAME}.wsgi:application --bind \"0.0.0.0:\$RUN_PORT\"\n" >> ./paracord_runner.sh
+# Collect static files
+RUN python manage.py collectstatic --noinput
 
-# Make entrypoint script executable
-RUN chmod +x paracord_runner.sh
+# Create startup script
+RUN echo '#!/bin/bash\n\
+PORT="${PORT:-8000}"\n\
+python manage.py migrate --no-input\n\
+gunicorn '"${PROJ_NAME}"'.wsgi:application --bind "0.0.0.0:$PORT"' > /code/start.sh && \
+    chmod +x /code/start.sh
 
-# Set the entrypoint command
-CMD ./paracord_runner.sh
+# Expose port
+EXPOSE 8000
+
+# Run startup script
+CMD ["/code/start.sh"]
