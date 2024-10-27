@@ -31,7 +31,7 @@ COPY . .
 # Set build arguments with defaults
 ARG DJANGO_SECRET_KEY="default-secret-key-change-in-production"
 ARG DJANGO_DEBUG=0
-ARG PROJ_NAME="shopiq"
+ARG PROJ_NAME="ShopIQ"
 
 # Set environment variables
 ENV DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY} \
