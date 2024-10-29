@@ -139,4 +139,4 @@ GitHub.sublime-settings
 .history
 
 #auth file data 
-googleusercontent.com.json
+./googleusercontent.com.json
