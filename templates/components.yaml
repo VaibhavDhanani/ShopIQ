@@ -1,0 +1,3 @@
+# templates/components.yaml
+collections:
+  allauth_ui: allauth_ui/components

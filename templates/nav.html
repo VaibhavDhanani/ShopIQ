@@ -1,92 +1,102 @@
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark z-index-5 ">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="ShopIQ" width="30" height="30" class="me-2">
-            <span class="fw-bold">ShopIQ</span>
+<nav class="bg-gray-50 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-800">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a href="{% url 'home' %}" class="flex items-center gap-3">
+            <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="ShopIQ Logo" />
+            <span class="text-2xl font-semibold text-gray-900 dark:text-gray-100">ShopIQ</span>
         </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        
+        <button data-collapse-toggle="navbar-dropdown" type="button"
+            class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-600 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-700"
+            aria-controls="navbar-dropdown" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15" />
+            </svg>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        <div class="hidden w-full md:block md:w-auto" id="navbar-dropdown">
+            <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700">
+                <li>
+                    <a href="{% url 'home' %}"
+                        class="block px-3 py-2 text-md font-bold text-emerald-600 rounded-md dark:text-emerald-400"
+                        aria-current="page">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Deals & Offers</a>
+                
+                <li class="relative">
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
+                        class="flex items-center justify-between w-full py-2 mt-2 text-md font-bold text-gray-700 rounded-md hover:bg-gray-100 hover:text-emerald-600 md:border-0 md:p-0 md:w-auto dark:text-gray-200 dark:hover:text-emerald-400 dark:focus:text-emerald-400 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+                        Dropdown
+                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <div id="dropdownNavbar"
+                        class="z-50 hidden absolute left-0 mt-2 w-44 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                            {% for cat in navbar_categories %}
+                            <li>
+                                <a href="{% url 'category-product' cat.slug  %}"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{ cat.name }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="py-1">
+                            <a href="#"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700">
+                                More</a>
+                        </div>
+                    </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="customDropdown" role="button">
-                        Categories
+
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url 'account_logout' %}"
+                        class="block px-3 py-2 text-md font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-red-600 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-red-600">
+                        Log Out
                     </a>
-                    <ul class="dropdown-menu" id="dropdownMenu">
-                        {% for cat in category %}
-                        <li><a class="dropdown-item" href="#">{{cat.name}}</a></li>
-                        {% endfor %}
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">More Categories</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-            <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                    const dropdownToggle = document.getElementById('customDropdown');
-                    const dropdownMenu = document.getElementById('dropdownMenu');
-
-                    dropdownToggle.addEventListener('click', (event) => {
-                        event.preventDefault();
-                        dropdownMenu.classList.toggle('show');
-                    });
-
-                    window.addEventListener('click', (event) => {
-                        if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                            dropdownMenu.classList.remove('show');
-                        }
-                    });
-                });
-            </script>
-
-            <form class="d-flex mb-2 mb-lg-0 me-lg-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search for products" aria-label="Search">
-                <button class="btn btn-outline-light" type="submit">
-                    <i class="bi bi-search"></i>
-                </button>
-            </form>
-
-            <ul class="navbar-nav mb-2 mb-lg-0">
-                {% if request.session.user_name %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'log-out' %}">
-                        <i class="bi bi-box-arrow-right me-1"></i>Log Out
-                    </a>
-                </li>
+                </li> 
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'log-in' %}">
-                        <i class="bi bi-person-circle me-1"></i>Login
+                <li>
+                    <a href="{% url 'account_signup' %}"
+                        class="block px-3 py-2 text-md font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-emerald-600 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-emerald-600">
+                        Register
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'sign-up' %}">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Register
+                <li>
+                    <a href="{% url 'account_login' %}"
+                        class="block px-3 py-2 text-md font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-emerald-600 dark:text-gray-200 dark:hover:bg-gray-700 dark:hover:text-emerald-600">
+                        Log In
                     </a>
                 </li>
                 {% endif %}
 
-                <li class="nav-item">
-                    <a class="nav-link position-relative" href="#">
-                        <i class="bi bi-cart-fill me-1"></i>Cart
-                        <span class="position-absolute top-10 start-100 translate-middle badge rounded-pill bg-danger">
-                            3
-                            <span class="visually-hidden">items in cart</span>
-                        </span>
-                    </a>
+                <li class="flex items-center px-3">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-gray-700 dark:text-gray-200">
+                        <path d="M3 3H5L6.68 14.39C6.81 15.28 7.55 16 8.44 16H19.56C20.45 16 21.19 15.28 21.32 14.39L23 5H6"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="9" cy="20" r="3" fill="currentColor" />
+                        <circle cx="18" cy="20" r="3" fill="currentColor" />
+                        <circle cx="19" cy="5" r="7" fill="#FF3E00" />
+                        <text x="19" y="7" text-anchor="middle" fill="#FFFFFF" font-size="9" font-weight="bold">3</text>
+                    </svg>
+                </li>
+
+                <li class="flex items-center">
+                    <button id="theme-toggle" type="button"
+                        class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                        <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                        </svg>
+                        <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414z">
+                            </path>
+                        </svg>
+                    </button>
                 </li>
             </ul>
         </div>

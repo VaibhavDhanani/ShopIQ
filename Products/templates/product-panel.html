@@ -1,33 +1,42 @@
 {% extends "index.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">Product Management Panel</h2>
-        <a href="{% url 'create-product' %}" class="btn btn-success">
-            <i class="bi bi-plus-circle me-2"></i>Create Product
+<div class="container mx-auto px-4 mt-20">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold m-0">Product Management Panel</h2>
+        <a href="{% url 'create-product' %}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+            </svg>
+            Create Product
         </a>
     </div>
     
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {% for product in products %}
-        <div class="col">
-            <div class="card h-100 shadow-sm">
+        <div class="flex flex-col">
+            <div class="bg-white rounded-lg shadow-md h-full flex flex-col">
                 <img src="https://imgs.search.brave.com/1NtgJsBaUn8e4zSwFrIYr-JtmTyLmnwn-7CfARYerUU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bGFwdG9wLWZyb20t/YWJvdmUuanBnP3dp/ZHRoPTEwMDAmZm9y/bWF0PXBqcGcmZXhp/Zj0wJmlwdGM9MA"
-                    class="card-img-top" alt="{{ product.name }}" style="object-fit: cover; height: 200px;">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text text-muted mb-1">${{ product.price }}</p>
-                    <p>Discount: {{product.discount_percentage}} %</p>
-                    <p>Actual Price :  {{product.discounted_price}} </p>
+                    class="w-full h-48 object-cover rounded-t-lg" alt="{{ product.name }}">
+                <div class="p-4 flex flex-col flex-grow">
+                    <h5 class="text-xl font-semibold">{{ product.name }}</h5>
+                    <p class="text-gray-600 mb-1">${{ product.price }}</p>
+                    <p class="text-gray-800">Discount: {{product.discount_percentage}}%</p>
+                    <p class="text-gray-800">Actual Price: {{product.discounted_price}}</p>
                     <div class="mt-auto">
-                        <div class="btn-group w-100" role="group">
-                            <a href="{% url 'update-product' product.id %}" class="btn btn-outline-primary">
-                                <i class="bi bi-pencil me-1"></i>Update
+                        <div class="flex gap-2 w-full">
+                            <a href="{% url 'update-product' product.id %}" class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                                Update
                             </a>
-                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
-                                data-bs-target="#deleteModal{{ product.id }}">
-                                <i class="bi bi-trash me-1"></i>Delete
+                            <button type="button" class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-red-600 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
+                                onclick="window.modal{{ product.id }}.showModal()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                                Delete
                             </button>
                         </div>
                     </div>
@@ -36,30 +45,33 @@
         </div>
 
         <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteModal{{ product.id }}" tabindex="-1"
-            aria-labelledby="deleteModalLabel{{ product.id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="{% url 'delete-product' product.id %}" method="post">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel{{ product.id }}">
-                                Confirm Deletion
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <dialog id="modal{{ product.id }}" class="modal rounded-lg shadow-lg p-0 w-full max-w-md mx-auto">
+            <div class="bg-white rounded-lg">
+                <form action="{% url 'delete-product' product.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="p-6 border-b">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">Confirm Deletion</h3>
+                            <button type="button" class="text-gray-400 hover:text-gray-500" onclick="window.modal{{ product.id }}.close()">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to delete "{{ product.name }}"?</p>
-                            <p class="text-danger"><small>This action cannot be undone.</small></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </div>
-                    </form>
-                </div>
+                        <p class="text-gray-700">Are you sure you want to delete "{{ product.name }}"?</p>
+                        <p class="text-red-600 text-sm mt-2">This action cannot be undone.</p>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 rounded-b-lg flex justify-end gap-2">
+                        <button type="button" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors" onclick="window.modal{{ product.id }}.close()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                            Delete
+                        </button>
+                    </div>
+                </form>
             </div>
-        </div>
+        </dialog>
         {% endfor %}
     </div>
 </div>

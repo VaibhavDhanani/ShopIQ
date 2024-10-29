@@ -1,0 +1,28 @@
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}ShopIQ{% endblock %}</title>
+    {% include 'base/css.html' %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+<body>
+    {% block content %}
+    {% endblock content %}
+    {% include 'base/js.html' %}
+    <script>
+        const themeToggleButton = document.getElementById("theme-toggle");
+      
+        themeToggleButton.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+        });
+      </script>
+      
+</body>
+</html>

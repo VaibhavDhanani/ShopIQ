@@ -1,51 +1,89 @@
-<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
+<div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <div class="relative h-48 overflow-hidden sm:h-64 md:h-80 lg:h-96 xl:h-[32rem]">
         {% for carousel in carousel %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-            <a href="{{ carousel.redirect_to }}">
-                <img src="{{ carousel.img }}" class="d-block" alt="Carousel Image"
-                    style="height: 400px; object-fit: cover;">
-            </a>
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="{{ carousel.img }}" 
+                class="absolute block h-full w-auto -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-cover" 
+                alt="Carousel image">
         </div>
         {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
+
+    <div class="absolute z-30 flex -translate-x-1/2 space-x-3 bottom-5 left-1/2">
+        {% for carousel in carousel %}
+        <button type="button" 
+            class="w-2.5 h-2.5 rounded-full bg-white/60 hover:bg-white dark:bg-gray-800/60 dark:hover:bg-gray-800 transition-colors duration-200" 
+            aria-current="{% if forloop.first %}true{% else %}false{% endif %}" 
+            aria-label="Slide {{ forloop.counter }}" 
+            data-carousel-slide-to="{{ forloop.counter0 }}">
+        </button>
+        {% endfor %}
+    </div>
+
+    <button type="button" 
+        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" 
+        data-carousel-prev>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/70 dark:bg-gray-800/70 group-hover:bg-white/80 dark:group-hover:bg-gray-800/80 group-focus:ring-4 group-focus:ring-white/70 dark:group-focus:ring-gray-800/70 transition-all duration-200">
+            <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+            </svg>
+            <span class="sr-only">Previous</span>
+        </span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
+    <button type="button" 
+        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" 
+        data-carousel-next>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/70 dark:bg-gray-800/70 group-hover:bg-white/80 dark:group-hover:bg-gray-800/80 group-focus:ring-4 group-focus:ring-white/70 dark:group-focus:ring-gray-800/70 transition-all duration-200">
+            <svg class="w-4 h-4 text-gray-800 dark:text-white rtl:rotate-180" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="sr-only">Next</span>
+        </span>
     </button>
 </div>
 
-<!-- Main Section with Items -->
-<div class="">
+<div class="py-12">
     {% for section in mainsection %}
-    <div class="container px-4 mb-5">
-        <h2 class="text-center my-4">
-            <a href="#" class="text-decoration-none text-dark">{{ section.heading }}</a>
-        </h2>
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 bg-[{{section.bgcolor|safe}}]">
+         <!-- style="background-color: {{ section.bgcolor|safe }};"> -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                <a href="#" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200">
+                    {{ section.title|upper }}
+                </a>
+            </h2>
+        </div>
 
-        <div class="row flex-nowrap overflow-auto">
-            {% for item in section.items|slice:":8" %}
-            <div class="col-auto" style="min-width: 18rem;">
-                <div class="card h-100 shadow-sm">
-                    <div class="ratio ratio-4x3">
-                        <img src="https://imgs.search.brave.com/1NtgJsBaUn8e4zSwFrIYr-JtmTyLmnwn-7CfARYerUU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9idXJz/dC5zaG9waWZ5Y2Ru/LmNvbS9waG90b3Mv/bGFwdG9wLWZyb20t/YWJvdmUuanBnP3dp/ZHRoPTEwMDAmZm9y/bWF0PXBqcGcmZXhp/Zj0wJmlwdGM9MA"
-                            class="card-img-top img-fluid" alt="{{ item.name }}" style="object-fit: cover;">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {% for product in section.products|slice:":8" %}
+            <div class="group">
+                <div class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-shadow duration-200 hover:shadow-md">
+                    <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-900">
+                        <img src="https://imgs.search.brave.com/u4uss4isvhizEzgAoaKO2iIx4NkgvcrygL8qzJ7oxL8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE2/NTExNjk2MTA3NjMt/ZmRkZjM5MmZhZGI0/P2ZtPWpwZyZxPTYw/Jnc9MzAwMCZpeGxp/Yj1yYi00LjAuMyZp/eGlkPU0zd3hNakEz/ZkRCOE1IeHpaV0Z5/WTJoOE1URjhmR3ho/Y0hSdmNITjhaVzU4/TUh4OE1IeDhmREE9.jpeg"
+                            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            alt="{{ product.name }}">
                     </div>
 
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-text text-muted flex-grow-1">${{ item.price }}</p>
-
-                        <div class="d-grid gap-2 mt-auto">
-                            <a href="{{ item.name }}" class="btn btn-primary mb-2">View Item</a>
-                            <button class="btn btn-outline-secondary">
-                                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                    <div class="flex flex-col flex-grow p-4">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                            {{ product.name }}
+                        </h3>
+                        <p class="text-lg font-semibold text-emerald-600 dark:text-emerald-400 mb-4">
+                            {{ product.price }} <span>&#8377;</span>
+                        </p>
+                        
+                        <div class="mt-auto space-y-2">
+                            <a href="{{ product.name }}" 
+                               class="block w-full px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                                View Details
+                            </a>
+                            <button class="block w-full px-4 py-2 text-sm font-medium text-emerald-600 bg-white border border-emerald-600 rounded-lg hover:bg-emerald-50 dark:text-emerald-400 dark:bg-gray-800 dark:border-emerald-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                                <span class="flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Add to Cart
+                                </span>
                             </button>
                         </div>
                     </div>

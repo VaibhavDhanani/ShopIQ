@@ -15,7 +15,7 @@ class UserSignUpForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = [
-            "name",
+            "username",
             "email",
             "phone_number",
             "type",
@@ -24,7 +24,7 @@ class UserSignUpForm(forms.ModelForm):
             "is_active",
         ]
         widgets = {
-            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "username": forms.TextInput(attrs={"class": "form-control"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control"}),
             "type": forms.Select(attrs={"class": "form-select"}),

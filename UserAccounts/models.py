@@ -54,7 +54,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ("admin", "Admin"),
     ]
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     phone_regex = RegexValidator(
         regex=r"^\d{10}$",

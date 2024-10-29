@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-css": "tailwindcss -i ./static/css/style.css -o ./static/css/output.css",
-    "watch-css": "tailwindcss -i ./static/css/style.css -o ./static/css/output.css --watch"
+    "build-css": "tailwindcss -i ./static/src/input.css -o ./static/src/output.css",
+    "watch-css": "tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.3"
+    "bootstrap": "^5.3.3",
+    "flowbite": "^2.5.2"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.13",
+    "tailwindcss": "^3.4.14"
   }
 }

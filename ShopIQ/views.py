@@ -1,16 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from Products.models import Product, Category
+from Products.models import *
+from django.utils import timezone
+from django.db.models import Prefetch
 
 
 def index(request):
-
-# Filter and remove products with invalid category references
-    invalid_products = Product.objects.filter(categories__isnull=True)
-    invalid_products.delete()
-
-    category = Category.objects.filter(parent__isnull=True)
-    print(category)
     carousel = [
         {
             "img": "https://rukminim2.flixcart.com/fk-p-flap/1600/270/image/a1446c3eec72dee4.jpeg?q=20",
@@ -29,34 +24,36 @@ def index(request):
             "redirect_to": "someurl",
         },
     ]
-    items = [
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-        {"img": "", "price": 100, "name": "dell laptop"},
-    ]
 
-    mainsection = [
-        {"heading": "top items", "items": items},
-        {"heading": "Trending", "items": items},
-        {"heading": "Currently Selled", "items": items},
-        {"heading": "For You", "items": items},
-    ]
-    context = {"category": category, "carousel": carousel, "mainsection": mainsection}
+    sections_data = []
+
+    active_sections = (
+        Section.objects.filter(is_active=True)
+        .exclude(
+            models.Q(start_date__gt=timezone.now())
+            | models.Q(end_date__lt=timezone.now())
+        )
+        .prefetch_related(
+            Prefetch(
+                "section_products",
+                queryset=SectionProduct.objects.select_related("product").order_by(
+                    "display_order", "-added_date"
+                ),
+            )
+        )
+    )
+
+    for section in active_sections:
+        products = [sp.product for sp in section.section_products.all()]
+
+        if products:
+            sections_data.append(
+                {
+                    "title": section.name,
+                    "products": products,
+                    "bgcolor": section.background_color,
+                }
+            )
+
+    context = {"carousel": carousel, "mainsection": sections_data}
     return render(request, "index.html", context)
-
-
-
-

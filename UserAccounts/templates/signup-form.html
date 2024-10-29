@@ -1,116 +1,65 @@
-<form method="POST" class="container mt-5" style="max-width: 600px;">
-    {% csrf_token %}
+{% extends 'signup-login-base.html' %}
 
-    <div class="mb-3">
-        <label for="{{ form.name.id_for_label }}" class="form-label">Name</label>
-        {{ form.name }}
-        <div class="text-danger">{{ form.name.errors }}</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-        {{ form.email }}
-        <div class="text-danger">{{ form.email.errors }}</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="{{ form.phone_number.id_for_label }}" class="form-label">Phone Number</label>
-        {{ form.phone_number }}
-        <div class="text-danger">{{ form.phone_number.errors }}</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="{{ form.type.id_for_label }}" class="form-label">User Type</label>
-        {{ form.type }}
-        <div class="text-danger">{{ form.type.errors }}</div>
-    </div>
-
-    <div class="mb-3">
-        <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-        {{ form.password }}
-        <div class="text-danger">{{ form.password.errors }}</div>
-
-        <div id="password-requirements" class="mt-2 text-muted" style="display: none;">
-            <p class="mb-1">Password must contain:</p>
-            <ul>
-                <li id="length" class="text-danger">At least 8 characters</li>
-                <li id="uppercase" class="text-danger">At least one uppercase letter</li>
-                <li id="lowercase" class="text-danger">At least one lowercase letter</li>
-                <li id="number" class="text-danger">At least one number</li>
-                <li id="special" class="text-danger">At least one special character (@, #, $, etc.)</li>
-            </ul>
+{% block content %}
+<section class="bg-gray-50 dark:bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
+            Flowbite Vaibhav
+        </a>
+        <div
+            class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Create an account
+                </h1>
+                <form class="space-y-4 md:space-y-6" action="#">
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
+                            email</label>
+                        <input type="email" name="email" id="email"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="name@company.com" required="">
+                    </div>
+                    <div>
+                        <label for="password"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <input type="password" name="password" id="password" placeholder="••••••••"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required="">
+                    </div>
+                    <div>
+                        <label for="confirm-password"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm
+                            password</label>
+                        <input type="confirm-password" name="confirm-password" id="confirm-password"
+                            placeholder="••••••••"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required="">
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="terms" aria-describedby="terms" type="checkbox"
+                                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                required="">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a
+                                    class="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                                    href="#">Terms and Conditions</a></label>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full text-black bg-red-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create
+                        an account</button>
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                        Already have an account? <a href="{% url 'log-in' %}"
+                            class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+                    </p>
+                </form>
+            </div>
         </div>
     </div>
+</section>
 
-    <div class="mb-3">
-        <label for="{{ form.confirm_password.id_for_label }}" class="form-label">Confirm Password</label>
-        {{ form.confirm_password }}
-        <div class="text-danger">{{ form.confirm_password.errors }}</div>
-    </div>
-
-    <div class="form-check mb-3">
-        {{ form.is_active }}
-        <label for="{{ form.is_active.id_for_label }}" class="form-check-label">
-            Is Active
-        </label>
-        <div class="text-danger">{{ form.is_active.errors }}</div>
-    </div>
-
-    <a href="{% url 'log-in' %}" >Already Created account , login here</a>
-
-    <button type="submit" class="btn btn-primary w-100">Create User</button>
-</form>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const passwordField = document.querySelector('#id_password');
-        const requirements = document.getElementById('password-requirements');
-        const lengthReq = document.getElementById('length');
-        const uppercaseReq = document.getElementById('uppercase');
-        const lowercaseReq = document.getElementById('lowercase');
-        const numberReq = document.getElementById('number');
-        const specialReq = document.getElementById('special');
-
-        passwordField.addEventListener('focus', function () {
-            requirements.style.display = 'block';
-        });
-
-        function checkPassword(password) {
-            const lengthCondition = password.length >= 8;
-            const uppercaseCondition = /[A-Z]/.test(password);
-            const lowercaseCondition = /[a-z]/.test(password);
-            const numberCondition = /[0-9]/.test(password);
-            const specialCondition = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-            toggleRequirement(lengthReq, lengthCondition);
-            toggleRequirement(uppercaseReq, uppercaseCondition);
-            toggleRequirement(lowercaseReq, lowercaseCondition);
-            toggleRequirement(numberReq, numberCondition);
-            toggleRequirement(specialReq, specialCondition);
-            if (
-                lengthCondition &&
-                uppercaseCondition &&
-                lowercaseCondition &&
-                numberCondition &&
-                specialCondition
-            ) {
-                requirements.style.display = 'none';
-            } else {
-                requirements.style.display = 'block';
-            }
-        }
-
-        function toggleRequirement(element, isValid) {
-            if (isValid) {
-                element.style.display = 'none';
-            } else {
-                element.style.display = 'block';
-            }
-        }
-
-
-        passwordField.addEventListener('input', function (event) {
-            checkPassword(event.target.value);
-        });
-    });
-</script>
+{% endblock content %}

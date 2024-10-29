@@ -1,0 +1,79 @@
+{% load compress %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopIQ</title>
+    {% include 'base/css.html' %}
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+<body>
+    {% include 'nav.html' %}
+<div className="min-h-screen flex flex-col">
+    <div className="flex-grow">
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 bg-[{{section.bgcolor|safe}}]">
+            <!-- style="background-color: {{ section.bgcolor|safe }};"> -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                    <a href="#"
+                        class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200">
+                        {{ section.title|upper }}
+                    </a>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {% for product in section.products %}
+                <div class="group">
+                    <div
+                        class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-shadow duration-200 hover:shadow-md">
+                        <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-900">
+                            <img src="https://imgs.search.brave.com/u4uss4isvhizEzgAoaKO2iIx4NkgvcrygL8qzJ7oxL8/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudW5zcGxhc2gu/Y29tL3Bob3RvLTE2/NTExNjk2MTA3NjMt/ZmRkZjM5MmZhZGI0/P2ZtPWpwZyZxPTYw/Jnc9MzAwMCZpeGxp/Yj1yYi00LjAuMyZp/eGlkPU0zd3hNakEz/ZkRCOE1IeHpaV0Z5/WTJoOE1URjhmR3ho/Y0hSdmNITjhaVzU4/TUh4OE1IeDhmREE9.jpeg"
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                alt="{{ product.name }}">
+                        </div>
+
+                        <div class="flex flex-col flex-grow p-4">
+                            <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                {{ product.name }}
+                            </h3>
+                            <p class="text-lg font-semibold text-emerald-600 dark:text-emerald-400 mb-4">
+                                {{ product.price }} <span>&#8377;</span>
+                            </p>
+
+                            <div class="mt-auto space-y-2">
+                                <a href="{{ product.name }}"
+                                    class="block w-full px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                                    View Details
+                                </a>
+                                <button
+                                    class="block w-full px-4 py-2 text-sm font-medium text-emerald-600 bg-white border border-emerald-600 rounded-lg hover:bg-emerald-50 dark:text-emerald-400 dark:bg-gray-800 dark:border-emerald-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200">
+                                    <span class="flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                        Add to Cart
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div>
+
+        {% include 'footer.html' %}
+    </div>
+</div>
+{% include 'base/js.html' %}
+</body>
+</html>

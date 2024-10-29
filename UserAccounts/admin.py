@@ -11,16 +11,16 @@ class UserAddressInline(admin.StackedInline):
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ['email', 'name', 'type', 'phone_number', 'is_active', 'is_staff', 'date_joined']
+    list_display = ['email', 'username', 'type', 'phone_number', 'is_active', 'is_staff', 'date_joined']
     list_filter = ['type', 'is_active', 'is_staff', 'date_joined']
-    search_fields = ['email', 'name', 'phone_number']
+    search_fields = ['email', 'username', 'phone_number']
     ordering = ['-date_joined']
     fieldsets = (
         (None, {
             'fields': ('email', 'password')
         }),
         (_('Personal Info'), {
-            'fields': ('name', 'phone_number', 'date_of_birth')
+            'fields': ('username', 'phone_number', 'date_of_birth')
         }),
         (_('User Type & Status'), {
             'fields': ('type', 'is_active')
@@ -43,7 +43,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'name', 'password1', 'password2'),
+            'fields': ('email', 'username', 'password1', 'password2'),
         }),
         (_('User Type'), {
             'fields': ('type',)
