@@ -137,3 +137,4 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+s3-shopiq-django-user_accessKeys.csv
