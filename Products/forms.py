@@ -10,6 +10,7 @@ class ProductForm(forms.ModelForm):
         fields = [
             "name",
             "description",
+            "image",
             "price",
             "discount_percentage",
             "brand",
@@ -19,6 +20,7 @@ class ProductForm(forms.ModelForm):
         ]
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4, "class": "form-control"}),
+            "image": forms.FileInput(attrs={"class": "form-select"}),
             "brand": forms.Select(attrs={"class": "form-select"}),
             "categories": forms.CheckboxSelectMultiple(),
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),

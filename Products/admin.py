@@ -31,6 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
                     "name",
                     "slug",
                     "description",
+                    "image",
                     "brand",
                     "categories",
                 )

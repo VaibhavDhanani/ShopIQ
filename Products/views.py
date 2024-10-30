@@ -13,10 +13,12 @@ def getAllProduct(request):
 
 def createProduct(request):
     if request.method == "POST":
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             return redirect("all-products")
+        else: 
+            return redirect("home")
     else:
         form = ProductForm()
     context = {"form": form}

@@ -11,3 +11,6 @@ django-allauth[socialaccount]
 django-allauth-ui
 django-widget-tweaks
 slippers
+django-storages 
+boto3
+Pillow

@@ -4,9 +4,9 @@ from decimal import Decimal
 from django.utils.text import slugify
 from Category.models import Category
 from django.utils import timezone
-from django.core.exceptions import ValidationError
-
-
+from django.core.exceptions import ValidationError  
+from django.conf import settings
+    
 class Brand(models.Model):
     name = models.CharField(max_length=50, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -76,6 +76,7 @@ class Section(models.Model):
     @property
     def is_visible(self):
         return self.is_active and self.is_active_period
+    
 
     def get_active_products(self):
         return self.products.filter(
@@ -87,6 +88,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, blank=True, max_length=120)
     description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="products/")
     price = models.DecimalField(
         max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0"))]
     )
@@ -124,7 +126,17 @@ class Product(models.Model):
             self.slug = slugify(self.name)
 
     def save(self, *args, **kwargs):
-        self.clean()
+        # Generate a slug if it's not provided
+        if not self.slug:
+            potential_slug = slugify(self.name)
+            unique_slug = potential_slug
+            counter = 1
+
+            while Product.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{potential_slug}-{counter}"
+                counter += 1
+
+            self.slug = unique_slug
         super().save(*args, **kwargs)
 
     @property
@@ -135,9 +147,12 @@ class Product(models.Model):
     @property
     def is_in_stock(self):
         return self.stock_quantity > 0
-
-    def get_absolute_url(self):
-        return f"/products/{self.slug}/"
+    
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return f"{settings.MEDIA_URL}{self.image.name}"
+        return None
 
 
 class SectionProduct(models.Model):
